@@ -1,0 +1,38 @@
+name: CI
+on:
+  pull_request: { }
+  release:
+    types:
+      - published
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Run CI Steps
+    runs-on: thm-eks-prod
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
+      CI: true
+      CIRCLE_ARTIFACTS: /tmp/ci/artifacts
+      CIRCLE_TEST_REPORTS: /tmp/ci/junit
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: ./.github/custom-actions/setup-gradle
+      - name: build
+        run: ./gradlew --parallel --stacktrace --continue check
+      - name: Report gradle cache size
+        run: du -hs ~/.gradle/caches
+      - name: Upload test reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          path: /tmp/ci/artifacts
+          retention-days: 5

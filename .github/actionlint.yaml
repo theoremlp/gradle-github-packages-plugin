@@ -1,0 +1,6 @@
+self-hosted-runner:
+  # Labels of self-hosted runner in array of string
+  labels:
+    - thm-eks-prod
+    - thm-eks-prod-sm
+    - thm-eks-stage

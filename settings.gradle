@@ -1,0 +1,3 @@
+rootProject.name = 'internal-publish-plugin-root'
+
+include 'gradle-internal-publish-plugin'
