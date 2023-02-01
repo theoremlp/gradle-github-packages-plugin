@@ -1,0 +1,47 @@
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'publishing'
+apply plugin: 'com.gradle.plugin-publish'
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+
+
+dependencies {
+    implementation gradleApi()
+    implementation 'com.netflix.nebula:nebula-publishing-plugin'
+    implementation 'com.netflix.nebula:gradle-info-plugin'
+    implementation 'com.fasterxml.jackson.core:jackson-core'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    testImplementation gradleTestKit()
+    testImplementation 'com.google.guava:guava'
+    testImplementation 'com.netflix.nebula:nebula-test'
+    testImplementation 'org.rauschig:jarchivelib'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.assertj:assertj-core'
+}
+
+
+gradlePlugin {
+    plugins {
+        githubPackages {
+            id = 'com.theoremlp.github-packages'
+            displayName = 'GitHub Packages plugin'
+            description = 'Streamlines loading JARs from GitHub Packages repositories'
+            implementationClass = 'com.theoremlp.github.packages.GithubPackagesPlugin'
+        }
+        githubPackagesSettings {
+            id = 'com.theoremlp.github-packages-settings'
+            displayName = 'GitHub Packages Settings plugin'
+            description = 'Streamlines loading Gradle plugins from GitHub Packages repositories'
+            implementationClass = 'com.theoremlp.github.packages.GithubPackagesPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/theoremlp/gradle-github-packages-plugin'
+    vcsUrl = 'https://github.com/palantir/gradle-github-packages-plugin'
+    description = 'Publish and Consume from GitHub Packages Maven repositories'
+    tags = ['publishing']
+}
+

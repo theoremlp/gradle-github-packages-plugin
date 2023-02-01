@@ -1,6 +1,10 @@
-# Gradle Internal Publish plugin
+# Gradle GitHub Packages plugin
 
-gradle-internal-publish-plugin is a tool used to facilitate publish artifacts to codeArtifacts
+gradle-github-packages-plugin is a toolchain for using 
+[GitHub Packages](https://github.com/features/packages) to host maven artifacts. It simplifies:
+
+- Consuming Gradle plugins, JARs and other maven Artifacts
+- Publishing JARs
 
 ## Contributing
 
