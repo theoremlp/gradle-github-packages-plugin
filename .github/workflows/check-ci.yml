@@ -60,9 +60,9 @@ jobs:
       - uses: ./.github/custom-actions/setup-gradle
       - name: Publish
         run: |
-          ./gradlew --parallel publish \
-          -Dgradle.publish.key=${{ secrets.GRADLE_PUBLISH_KEY }} \
-          -Dgradle.publish.secret=${{ secrets.GRADLE_PUBLISH_SECRET }}
+          ./gradlew --parallel publishPlugins \
+          -Pgradle.publish.key=${{ secrets.GRADLE_PUBLISH_KEY }} \
+          -Pgradle.publish.secret=${{ secrets.GRADLE_PUBLISH_SECRET }}
       - name: PagerDuty Alert
         uses: theoremlp/pagerduty-alert@v1
         if: ${{ failure() }}
