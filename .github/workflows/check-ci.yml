@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     name: Run CI Steps
-    runs-on: thm-eks-prod
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
@@ -39,7 +39,7 @@ jobs:
 
   publish:
     name: Publish
-    runs-on: thm-eks-prod
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
@@ -68,9 +68,8 @@ jobs:
         if: ${{ failure() }}
         with:
           pd-integration-key: ${{ secrets.PD_GHA_GLOBAL_INTEGRATION_KEY }}
-          title: check-ci failed for clip-orchestrator-service
+          title: check-ci failed for ${{ github.repository }}
           summary: |
-            CI checks (lints, unit tests, & external tests) or deployment failed on `main` for 
-            clip-orchestrator-service.
+            CI checks or deployment failed on `main` for ${{ github.repository }}.
           service: clip-business-hours
           severity: warning
