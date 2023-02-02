@@ -8,7 +8,7 @@ gradle-github-packages-plugin is a toolchain for using
 
 ## Contributing
 
-To contribute to orchestrator-service:
+To contribute:
 
 - Install Java 17 - `brew tap homebrew/cask-versions && brew install --cask homebrew/cask-versions/zulu17`
 - Setup `JAVA_HOME` - `export JAVA_HOME=$(/usr/libexec/java_home -v 17)`
