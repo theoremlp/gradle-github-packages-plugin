@@ -40,7 +40,7 @@ gradlePlugin {
 
 pluginBundle {
     website = 'https://github.com/theoremlp/gradle-github-packages-plugin'
-    vcsUrl = 'https://github.com/palantir/gradle-github-packages-plugin'
+    vcsUrl = 'https://github.com/theoremlp/gradle-github-packages-plugin'
     description = 'Publish and Consume from GitHub Packages Maven repositories'
     tags = ['publishing']
 }
