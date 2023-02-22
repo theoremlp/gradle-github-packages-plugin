@@ -33,7 +33,7 @@ gradlePlugin {
             id = 'com.theoremlp.github-packages-settings'
             displayName = 'GitHub Packages Settings plugin'
             description = 'Streamlines loading Gradle plugins from GitHub Packages repositories'
-            implementationClass = 'com.theoremlp.github.packages.GithubPackagesPlugin'
+            implementationClass = 'com.theoremlp.github.packages.GithubPackagesSettingsPlugin'
         }
     }
 }
