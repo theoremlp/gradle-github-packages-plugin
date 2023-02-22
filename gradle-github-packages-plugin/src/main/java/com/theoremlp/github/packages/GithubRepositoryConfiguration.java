@@ -23,12 +23,12 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 record GithubRepositoryConfiguration(String organization, String repo, String username, String accessToken) {
-    static final Path GITHUB_REPOSITORY = Path.of("~/.github/repository.json");
+    static final String GITHUB_REPOSITORY = "~/.github/repository.json";
 
     static GithubRepositoryConfiguration fromConfig() {
         Path configFile = Optional.ofNullable(System.getProperty("GITHUB_REPOSITORY_CONFIG"))
                 .map(Path::of)
-                .orElse(GITHUB_REPOSITORY);
+                .orElseGet(() -> Path.of(GITHUB_REPOSITORY.replaceFirst("^~", System.getProperty("user.home"))));
 
         if (!Files.exists(configFile)) {
             throw new IllegalStateException("Missing configuration file " + configFile);
