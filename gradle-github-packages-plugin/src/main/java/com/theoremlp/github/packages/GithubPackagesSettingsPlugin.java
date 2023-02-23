@@ -17,6 +17,7 @@ package com.theoremlp.github.packages;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.initialization.Settings;
+import org.gradle.api.internal.plugins.DslObject;
 
 /**
  * We use a settings plugin to ensure that the right repositories are configured for the buildscript
@@ -26,7 +27,12 @@ public final class GithubPackagesSettingsPlugin implements Plugin<Settings> {
 
     @Override
     public void apply(Settings settings) {
-        GithubRepositoryConfiguration config = GithubRepositoryConfiguration.fromConfig();
-        MavenRepository.registerRepository(settings.getBuildscript().getRepositories(), config);
+        GithubCredentialsConfiguration config = GithubCredentialsConfiguration.fromConfig();
+        GithubPackagesPlugin extension =
+                settings.getExtensions().create("githubPackages", GithubPackagesPlugin.class, config);
+        new DslObject(settings.getBuildscript().getRepositories())
+                .getConvention()
+                .getPlugins()
+                .put("githubPackages", extension);
     }
 }
