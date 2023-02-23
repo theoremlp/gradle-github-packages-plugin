@@ -19,8 +19,15 @@ import com.theoremlp.github.packages.GithubPackagesPlugin
 import nebula.test.IntegrationSpec
 
 class GithubPackagesPluginIntegrationSpec extends IntegrationSpec{
+    private File configFile;
 
     def setup() {
+        configFile = file("config.json")
+        configFile << """{
+        "username": "theoremlp",
+        "accessToken": "fake-access-token"
+        }
+        """.stripIndent()
         buildFile << """
         ${applyPlugin(GithubPackagesPlugin)}
         """.stripIndent()
@@ -29,7 +36,7 @@ class GithubPackagesPluginIntegrationSpec extends IntegrationSpec{
     def 'missing configuration file fails'() {
         when:
         def missingFile = new File(projectDir, "missing.json")
-        def result = runTasks("-DGITHUB_REPOSITORY_CONFIG=" + missingFile.getAbsolutePath())
+        def result = runTasks("-DGITHUB_CREDENTIALS_CONFIG=" + missingFile.getAbsolutePath())
 
         then:
         result.failure
@@ -38,18 +45,25 @@ class GithubPackagesPluginIntegrationSpec extends IntegrationSpec{
 
     def 'present configuration file applies successfully'() {
         when:
-        def configFile = file("config.json")
-        configFile << """{
-        "organization": "theoremlp",
-        "repo": "gradle-github-packages-plugin",
-        "username": "theoremlp",
-        "accessToken": "fake-access-token"
-        }
-        """.stripIndent()
-
-        def result = runTasks("-DGITHUB_REPOSITORY_CONFIG=" + configFile.getAbsolutePath())
+        def result = runTasks("-DGITHUB_CREDENTIALS_CONFIG=" + configFile.getAbsolutePath())
 
         then:
         result.success
     }
+
+    def 'repository can be created'() {
+        buildFile << """
+        repositories {
+            githubPackages { repository 'theoremlp/gradle-github-packages' }
+        }
+        """.stripIndent()
+
+        when:
+        def result = runTasks("-DGITHUB_CREDENTIALS_CONFIG=" + configFile.getAbsolutePath())
+
+        then:
+        result.success
+    }
+
+
 }

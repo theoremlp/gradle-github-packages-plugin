@@ -37,7 +37,8 @@ public final class PublishJarPlugin implements Plugin<Project> {
         project.getPluginManager().apply(JavaLibraryPlugin.class);
         applyPublishingPlugins(project);
 
-        ArtifactRepository githubRepo = project.getRepositories().getByName(MavenRepository.REPOSITORY_NAME);
+        ArtifactRepository githubRepo =
+                project.getRepositories().getByName(GithubPackagesExtension.GITHUB_REPO_DEFAULT_NAME);
         PublishingExtension publishing = project.getExtensions().getByType(PublishingExtension.class);
         publishing.getRepositories().add(githubRepo);
 

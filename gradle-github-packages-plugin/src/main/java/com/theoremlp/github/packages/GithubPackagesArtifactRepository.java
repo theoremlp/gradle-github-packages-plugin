@@ -13,17 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.theoremlp.github.packages;
 
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
-import org.gradle.api.internal.plugins.DslObject;
+import org.gradle.api.Action;
+import org.gradle.api.artifacts.repositories.ArtifactRepository;
+import org.gradle.api.artifacts.repositories.MavenArtifactRepository.MetadataSources;
+import org.gradle.api.artifacts.repositories.MavenRepositoryContentDescriptor;
 
-public final class GithubPackagesPlugin implements Plugin<Project> {
-    @Override
-    public void apply(Project project) {
-        GithubCredentialsConfiguration config = GithubCredentialsConfiguration.fromConfig();
-        GithubPackagesExtension extension = project.getObjects().newInstance(GithubPackagesExtension.class, config);
-        new DslObject(project.getRepositories()).getConvention().getPlugins().put("githubPackages", extension);
-    }
+public interface GithubPackagesArtifactRepository extends ArtifactRepository {
+    String getRepository();
+
+    void setRepository(String fullName);
+
+    void metadataSources(Action<? super MetadataSources> configureAction);
+
+    void mavenContent(Action<? super MavenRepositoryContentDescriptor> configureAction);
 }

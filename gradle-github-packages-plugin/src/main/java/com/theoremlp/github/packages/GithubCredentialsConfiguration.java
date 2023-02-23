@@ -20,22 +20,25 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
-record GithubRepositoryConfiguration(String organization, String repo, String username, String accessToken) {
-    static final String GITHUB_REPOSITORY = "~/.github/repository.json";
+record GithubCredentialsConfiguration(String username, String accessToken) {
+    static final String GITHUB_REPOSITORY = "~/.github/credentials.json";
 
-    static GithubRepositoryConfiguration fromConfig() {
-        Path configFile = Optional.ofNullable(System.getProperty("GITHUB_REPOSITORY_CONFIG"))
+    static GithubCredentialsConfiguration fromConfig() {
+        Path configFile = Optional.ofNullable(System.getProperty("GITHUB_CREDENTIALS_CONFIG"))
                 .map(Path::of)
-                .orElseGet(() -> Path.of(GITHUB_REPOSITORY.replaceFirst("^~", System.getProperty("user.home"))));
+                .orElseGet(() -> Paths.get(System.getProperty("user.home"))
+                        .resolve(".github")
+                        .resolve("credentials.json"));
 
         if (!Files.exists(configFile)) {
             throw new IllegalStateException("Missing configuration file " + configFile);
         }
 
         try (BufferedReader bufferedReader = Files.newBufferedReader(configFile)) {
-            return Mappers.MAPPER.readValue(bufferedReader, GithubRepositoryConfiguration.class);
+            return Mappers.MAPPER.readValue(bufferedReader, GithubCredentialsConfiguration.class);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load repository config", e);
         }
