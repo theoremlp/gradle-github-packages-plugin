@@ -35,6 +35,11 @@ gradlePlugin {
             description = 'Streamlines loading Gradle plugins from GitHub Packages repositories'
             implementationClass = 'com.theoremlp.github.packages.GithubPackagesSettingsPlugin'
         }
+        githubPackagesPublish {
+            id = 'com.theoremlp.github-packages-publish'
+            description = 'Streamlines publish JARs to GitHub Packages repositories'
+            implementationClass = 'com.theoremlp.github.packages.PublishJarPlugin'
+        }
     }
 }
 
