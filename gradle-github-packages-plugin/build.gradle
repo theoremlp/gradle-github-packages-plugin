@@ -37,6 +37,7 @@ gradlePlugin {
         }
         githubPackagesPublish {
             id = 'com.theoremlp.github-packages-publish'
+            displayName = 'GitHub Packages Publish plugin'
             description = 'Streamlines publish JARs to GitHub Packages repositories'
             implementationClass = 'com.theoremlp.github.packages.PublishJarPlugin'
         }
