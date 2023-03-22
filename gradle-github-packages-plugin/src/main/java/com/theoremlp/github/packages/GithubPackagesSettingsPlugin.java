@@ -23,10 +23,10 @@ import org.gradle.api.internal.plugins.DslObject;
  * We use a settings plugin to ensure that the right repositories are configured for the buildscript
  * classpath in case of custom gradle plugins.
  */
-public final class GithubPackagesSettingsPlugin implements Plugin<Settings> {
+public class GithubPackagesSettingsPlugin implements Plugin<Settings> {
 
     @Override
-    public void apply(Settings settings) {
+    public final void apply(Settings settings) {
         GithubCredentialsConfiguration config = GithubCredentialsConfiguration.fromConfig();
         GithubPackagesPlugin extension =
                 settings.getExtensions().create("githubPackages", GithubPackagesPlugin.class, config);
