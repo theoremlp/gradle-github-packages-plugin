@@ -54,7 +54,7 @@ public final class PublishJarPlugin implements Plugin<Project> {
             Project project, String publicationName, Consumer<MavenPublication> publicationConfiguration) {
         project.getExtensions().getByType(PublishingExtension.class).publications(publications -> {
             MavenPublication mavenPublication = publications.maybeCreate(publicationName, MavenPublication.class);
-            publicationConfiguration.execute(mavenPublication);
+            publicationConfiguration.accept(mavenPublication);
         });
     }
 
