@@ -16,6 +16,7 @@
 package com.theoremlp.github.packages;
 
 import java.util.Collections;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import nebula.plugin.info.scm.ScmInfoPlugin;
 import nebula.plugin.publishing.maven.MavenBasePublishPlugin;
@@ -27,6 +28,7 @@ import org.gradle.api.artifacts.repositories.ArtifactRepository;
 import org.gradle.api.plugins.JavaLibraryPlugin;
 import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.publish.PublishingExtension;
+import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.api.publish.tasks.GenerateModuleMetadata;
 import org.gradle.jvm.tasks.Jar;
@@ -41,9 +43,19 @@ public final class PublishJarPlugin implements Plugin<Project> {
                 project.getRepositories().getByName(GithubPackagesExtension.GITHUB_REPO_DEFAULT_NAME);
         PublishingExtension publishing = project.getExtensions().getByType(PublishingExtension.class);
         publishing.getRepositories().add(githubRepo);
+        addPublication(
+                project, "maven", maven -> maven.from(project.getComponents().getByName("java")));
 
         configureJars(project);
         disableModuleMetadata(project);
+    }
+
+    public void addPublication(
+            Project project, String publicationName, Consumer<MavenPublication> publicationConfiguration) {
+        project.getExtensions().getByType(PublishingExtension.class).publications(publications -> {
+            MavenPublication mavenPublication = publications.maybeCreate(publicationName, MavenPublication.class);
+            publicationConfiguration.accept(mavenPublication);
+        });
     }
 
     private static void configureJars(Project project) {
